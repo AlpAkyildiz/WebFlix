@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('İçerik Öner')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5">
+    <div class="row g-5">
+        <!-- Form Alanı -->
+        <div class="col-lg-6">
+            <h1 class="h3 fw-bold mb-2">Kataloğa İçerik Öner</h1>
+            <p class="text-secondary mb-4">Platformda görmek istediğiniz film veya diziyi bizimle paylaşın.</p>
+
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+            <form th:action="@{/oner}" th:object="${suggestionForm}" method="post"
+                  class="p-4 rounded-4 border border-secondary" style="background-color: #14161d;">
+                <div class="mb-3">
+                    <label class="form-label">Yapım Adı *</label>
+                    <input type="text" th:field="*{title}" class="form-control form-control-dark" required
+                           placeholder="Örn: Oppenheimer">
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Format *</label>
+                        <select th:field="*{type}" class="form-select form-select-dark" required>
+                            <option value="Film">Film</option>
+                            <option value="Dizi">Dizi</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Tür *</label>
+                        <input type="text" th:field="*{genre}" class="form-control form-control-dark" required
+                               placeholder="Örn: Biyografi / Dram">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Çıkış Yılı</label>
+                        <input type="number" th:field="*{releaseYear}" class="form-control form-control-dark"
+                               placeholder="2023">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Adınız *</label>
+                        <input type="text" th:field="*{senderName}" class="form-control form-control-dark" required
+                               placeholder="Adınız Soyadınız">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Öneri Notu</label>
+                    <textarea th:field="*{note}" rows="3" class="form-control form-control-dark"
+                              placeholder="Neden eklenmeli?"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-cine w-100 py-2">Öneriyi Gönder</button>
+            </form>
+        </div>
+
+        <!-- Gönderilen Öneriler Listesi -->
+        <div class="col-lg-6">
+            <h2 class="h4 fw-bold mb-4">Kullanıcılardan Gelen Öneriler</h2>
+
+            <div th:if="${#lists.isEmpty(suggestions)}" class="p-4 border border-secondary rounded-4 text-secondary">
+                Henüz bir öneri gönderilmedi. İlk öneriyi soldaki formdan ekleyebilirsin.
+            </div>
+
+            <div class="d-flex flex-column gap-3" th:unless="${#lists.isEmpty(suggestions)}">
+                <div class="p-3 rounded-3 border border-secondary" style="background-color: #14161d;"
+                     th:each="s : ${suggestions}">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="badge bg-danger" th:text="${s.type}">Film</span>
+                        <small class="text-secondary" th:text="'Öneren: ' + ${s.senderName}">Öneren</small>
+                    </div>
+                    <h3 class="h6 fw-bold mb-1"
+                        th:text="${s.title} + (${s.releaseYear != null} ? ' (' + ${s.releaseYear} + ')' : '')">Yapım</h3>
+                    <small class="text-warning d-block mb-2" th:text="${s.genre}">Tür</small>
+                    <p class="small text-secondary mb-0" th:if="${s.note != null and !s.note.isBlank()}"
+                       th:text="${s.note}">Not</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

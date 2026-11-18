@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sayfa Bulunamadı')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5 text-center py-5">
+    <h1 class="display-1 fw-bold text-danger">404</h1>
+    <h2 class="h4 mb-3">Aradığınız içerik veya sayfa bulunamadı.</h2>
+    <p class="text-secondary mb-4">Kaldırılmış olabilir veya bağlantı adresi hatalı girilmiş olabilir.</p>
+    <a th:href="@{/}" class="btn btn-cine px-4">Ana Sayfaya Dön</a>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

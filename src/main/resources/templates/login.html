@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Giriş Yap')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="p-4 p-md-5 rounded-4 border border-secondary shadow-lg" style="background-color: #14161d;">
+                <h1 class="h3 fw-bold text-center mb-2">WebFlix'e Giriş Yap</h1>
+                <p class="text-secondary text-center small mb-4">Hesabınıza veya yönetici paneline erişin</p>
+
+                <div th:if="${errorMessage}" class="alert alert-danger py-2 small" th:text="${errorMessage}"></div>
+                <div th:if="${infoMessage}" class="alert alert-info py-2 small" th:text="${infoMessage}"></div>
+
+                <form th:action="@{/giris}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" name="username" class="form-control form-control-dark" required
+                               placeholder="admin veya kullanici">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" name="password" class="form-control form-control-dark" required
+                               placeholder="••••••••">
+                    </div>
+
+                    <button type="submit" class="btn btn-cine w-100 py-2 mb-3">Giriş Yap</button>
+                </form>
+
+                <div class="text-center small text-secondary mb-4">
+                    Hesabın yok mu? <a th:href="@{/kayit}" class="text-danger text-decoration-none fw-semibold">Hemen Kayıt Ol</a>
+                </div>
+
+                <!-- Test / Sunum İçin Hazır Hesap Bilgileri -->
+                <div class="p-3 rounded-3 border border-secondary small" style="background-color: #0b0c10;">
+                    <div class="fw-bold text-warning mb-1">Hazır Test Hesapları:</div>
+                    <div class="text-secondary"><strong>Admin:</strong> <code>admin</code> / Şifre: <code>admin123</code></div>
+                    <div class="text-secondary"><strong>Kullanıcı:</strong> <code>kullanici</code> / Şifre: <code>1234</code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

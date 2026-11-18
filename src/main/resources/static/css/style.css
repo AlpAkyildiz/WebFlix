@@ -1,0 +1,124 @@
+:root {
+    --bg-main: #0b0c10;
+    --bg-card: #14161d;
+    --accent-red: #e50914;
+    --accent-red-hover: #b20710;
+    --border-subtle: #262936;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: #f1f5f9;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.navbar-custom {
+    background-color: rgba(11, 12, 16, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.brand-logo {
+    color: var(--accent-red) !important;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+}
+
+.hero-banner {
+    background: linear-gradient(90deg, rgba(11, 12, 16, 0.96) 35%, rgba(11, 12, 16, 0.65) 100%),
+                radial-gradient(circle at top right, rgba(229, 9, 20, 0.25), transparent 60%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+}
+
+.media-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.media-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-red);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+}
+
+.poster-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 2 / 3;
+    background-color: #1a1d26;
+}
+
+.poster-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.media-card:hover .poster-wrapper img {
+    transform: scale(1.04);
+}
+
+.rating-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.82);
+    color: #fbbf24;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.type-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.btn-cine {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+    color: #fff;
+    font-weight: 600;
+}
+
+.btn-cine:hover {
+    background-color: var(--accent-red-hover);
+    border-color: var(--accent-red-hover);
+    color: #fff;
+}
+
+.form-control-dark, .form-select-dark {
+    background-color: #14161d;
+    border: 1px solid var(--border-subtle);
+    color: #f8fafc;
+}
+
+.form-control-dark:focus, .form-select-dark:focus {
+    background-color: #181b24;
+    border-color: var(--accent-red);
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25);
+}
+
+.cast-pill {
+    background-color: #1d202b;
+    border: 1px solid var(--border-subtle);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+}

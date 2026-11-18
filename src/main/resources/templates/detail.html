@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${item.title})}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5">
+    <div class="row g-5">
+        <!-- Sol Afiş Alanı -->
+        <div class="col-md-4">
+            <div class="poster-wrapper rounded-4 shadow-lg border border-secondary">
+                <img th:src="@{${item.posterUrl}}" th:alt="${item.title}"
+                     onerror="this.onerror=null;this.src='https://placehold.co/400x600/18181b/e50914?text=' + encodeURIComponent(this.alt);">
+            </div>
+        </div>
+
+        <!-- Sağ Bilgi Alanı -->
+        <div class="col-md-8">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <span class="badge"
+                      th:classappend="${item.type == 'FILM'} ? 'bg-danger' : 'bg-primary'"
+                      th:text="${item.type == 'FILM'} ? 'FİLM' : 'DİZİ'">FİLM</span>
+                <span class="badge bg-secondary" th:text="${item.genre}">Tür</span>
+                <span class="text-secondary" th:text="${item.releaseYear}">2010</span>
+                <span class="text-secondary">•</span>
+                <span class="text-secondary" th:text="${item.duration}">2s 28dk</span>
+                <span class="ms-2 text-warning fw-bold fs-5" th:text="'★ ' + ${item.rating} + ' / 10'">★ 8.8</span>
+            </div>
+
+            <h1 class="display-5 fw-bold mb-3" th:text="${item.title}">Inception</h1>
+            <p class="text-secondary mb-4">
+                <strong class="text-light">Yönetmen / Yaratıcı:</strong>
+                <span th:text="${item.director}">Christopher Nolan</span>
+            </p>
+
+            <h2 class="h5 fw-bold mb-2">Özet</h2>
+            <p class="fs-5 text-light opacity-75 mb-4" th:text="${item.summary}">Özet metni...</p>
+
+            <h2 class="h5 fw-bold mb-3">Oyuncu Kadrosu</h2>
+            <div class="d-flex flex-wrap gap-2 mb-5">
+                <span class="cast-pill" th:each="actor : ${item.cast}" th:text="${actor}">Oyuncu</span>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3">
+                <button type="button" class="btn btn-cine btn-lg px-4" data-bs-toggle="modal" data-bs-target="#trailerModal">
+                    &#9654; Fragmanı İzle
+                </button>
+                <form th:action="@{/listem/toggle/{id}(id=${item.id})}" method="post">
+                    <button type="submit" class="btn btn-outline-light btn-lg px-4"
+                            th:text="${inWatchlist} ? '✓ İzleme Listemden Çıkar' : '+ İzleme Listeme Ekle'">
+                        + İzleme Listeme Ekle
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benzer Yapımlar -->
+    <section class="mt-5 pt-5 border-top border-secondary" th:unless="${#lists.isEmpty(similarContents)}">
+        <h3 class="h4 fw-bold mb-4">Benzer Yapımlar</h3>
+        <div class="row g-4">
+            <div class="col-6 col-md-4" th:each="sim : ${similarContents}">
+                <div class="media-card p-3 d-flex align-items-center gap-3">
+                    <img th:src="@{${sim.posterUrl}}" th:alt="${sim.title}"
+                         style="width: 70px; height: 100px; object-fit: cover; border-radius: 8px;"
+                         onerror="this.onerror=null;this.src='https://placehold.co/140x200/18181b/e50914?text=Poster';">
+                    <div>
+                        <span class="badge bg-secondary mb-1" th:text="${sim.genre}">Tür</span>
+                        <h4 class="h6 fw-bold mb-1" th:text="${sim.title}">Başlık</h4>
+                        <a th:href="@{/icerik/{id}(id=${sim.id})}" class="small text-danger text-decoration-none">İncele &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Fragman Modal -->
+<div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" th:text="${item.title} + ' - Resmi Fragman'">Fragman</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe th:src="${item.trailerUrl}" title="Fragman" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

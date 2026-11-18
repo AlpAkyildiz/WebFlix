@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Kayıt Ol')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="p-4 p-md-5 rounded-4 border border-secondary shadow-lg" style="background-color: #14161d;">
+                <h1 class="h3 fw-bold text-center mb-2">Yeni Hesap Oluştur</h1>
+                <p class="text-secondary text-center small mb-4">Kendi izleme listeni oluşturmak için üye ol</p>
+
+                <div th:if="${errorMessage}" class="alert alert-danger py-2 small" th:text="${errorMessage}"></div>
+
+                <form th:action="@{/kayit}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Ad Soyad</label>
+                        <input type="text" name="fullName" class="form-control form-control-dark" required
+                               placeholder="Örn: Zeynep Kaya">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" name="username" class="form-control form-control-dark" required
+                               placeholder="Örn: zeynepk">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">E-Posta</label>
+                        <input type="email" name="email" class="form-control form-control-dark" required
+                               placeholder="ornek@mail.com">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" name="password" class="form-control form-control-dark" required
+                               placeholder="En az 4 karakter">
+                    </div>
+
+                    <button type="submit" class="btn btn-cine w-100 py-2 mb-3">Kayıt Ol</button>
+                </form>
+
+                <div class="text-center small text-secondary">
+                    Zaten hesabın var mı? <a th:href="@{/giris}" class="text-danger text-decoration-none fw-semibold">Giriş Yap</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

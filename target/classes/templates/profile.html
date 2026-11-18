@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Hesabım')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5">
+    <div class="p-4 rounded-4 border border-secondary mb-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3"
+         style="background-color: #14161d;">
+        <div>
+            <span class="badge mb-2"
+                  th:classappend="${user.role == 'ADMIN'} ? 'bg-warning text-dark' : 'bg-danger'"
+                  th:text="${user.role == 'ADMIN'} ? 'YÖNETİCİ HESABI' : 'STANDART ÜYE'">ÜYE</span>
+            <h1 class="h3 fw-bold mb-1" th:text="${user.fullName}">Kullanıcı Adı</h1>
+            <p class="text-secondary mb-0" th:text="'@' + ${user.username} + ' • ' + ${user.email}">Bilgi</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a th:if="${user.role == 'ADMIN'}" th:href="@{/admin}" class="btn btn-warning fw-semibold">
+                &#9881; Yönetim Paneline Git
+            </a>
+            <a th:href="@{/cikis}" class="btn btn-outline-danger">Çıkış Yap</a>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 fw-bold mb-0 border-start border-4 border-danger ps-3"
+            th:text="'İzleme Listem (' + ${#lists.size(watchlistContents)} + ')'">İzleme Listem</h2>
+        <a th:href="@{/kesfet}" class="btn btn-sm btn-outline-light">+ Yeni Yapım Ekle</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(watchlistContents)}" class="text-center py-5 border border-secondary rounded-3">
+        <p class="text-secondary mb-3">İzleme listeniz şu an boş.</p>
+        <a th:href="@{/kesfet}" class="btn btn-cine">Kataloğu İncele</a>
+    </div>
+
+    <div class="row g-4" th:unless="${#lists.isEmpty(watchlistContents)}">
+        <div class="col-6 col-md-3" th:each="item : ${watchlistContents}">
+            <div class="media-card h-100 d-flex flex-column">
+                <div class="poster-wrapper">
+                    <span class="rating-badge" th:text="'★ ' + ${item.rating}">★ 8.8</span>
+                    <img th:src="@{${item.posterUrl}}" th:alt="${item.title}"
+                         onerror="this.onerror=null;this.src='https://placehold.co/400x600/18181b/e50914?text=' + encodeURIComponent(this.alt);">
+                </div>
+                <div class="p-3 d-flex flex-column flex-grow-1">
+                    <h3 class="h6 fw-bold mb-3" th:text="${item.title}">Başlık</h3>
+                    <div class="mt-auto d-flex gap-2">
+                        <a th:href="@{/icerik/{id}(id=${item.id})}" class="btn btn-cine btn-sm flex-grow-1">İncele</a>
+                        <form th:action="@{/listem/toggle/{id}(id=${item.id})}" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Çıkar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ana Sayfa')}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="container my-5">
+    <!-- Öne Çıkan Yapım (Hero) -->
+    <section class="hero-banner p-4 p-md-5 mb-5" th:if="${featured != null}">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-danger">HAFTANIN ÖNE ÇIKANI</span>
+                    <span class="badge bg-secondary" th:text="${featured.genre}">Bilim Kurgu</span>
+                    <span class="text-warning fw-bold" th:text="'★ ' + ${featured.rating}">★ 8.8</span>
+                </div>
+                <h1 class="display-4 fw-bold mb-3" th:text="${featured.title}">Inception</h1>
+                <p class="text-secondary fs-5 mb-4" th:text="${featured.summary}">Özet</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a th:href="@{/icerik/{id}(id=${featured.id})}" class="btn btn-cine btn-lg px-4">
+                        Detayları İncele
+                    </a>
+                    <form th:action="@{/listem/toggle/{id}(id=${featured.id})}" method="post">
+                        <button type="submit" class="btn btn-outline-light btn-lg px-4"
+                                th:text="${watchlistIds.contains(featured.id)} ? '✓ Listemde Ekli' : '+ Listeme Ekle'">
+                            + Listeme Ekle
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popüler Filmler -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 fw-bold mb-0 border-start border-4 border-danger ps-3">Popüler Filmler</h2>
+            <a th:href="@{/kesfet(tur='FILM')}" class="text-decoration-none text-danger fw-semibold">Tümünü Gör &rarr;</a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-6 col-md-3" th:each="movie : ${movies}">
+                <div class="media-card h-100 d-flex flex-column">
+                    <div class="poster-wrapper">
+                        <span class="badge bg-danger type-badge">FİLM</span>
+                        <span class="rating-badge" th:text="'★ ' + ${movie.rating}">★ 8.8</span>
+                        <img th:src="@{${movie.posterUrl}}" th:alt="${movie.title}"
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x600/18181b/e50914?text=' + encodeURIComponent(this.alt);">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <small class="text-secondary mb-1" th:text="${movie.genre} + ' • ' + ${movie.releaseYear}">Tür • Yıl</small>
+                        <h3 class="h6 fw-bold mb-3" th:text="${movie.title}">Başlık</h3>
+                        <div class="mt-auto d-flex gap-2">
+                            <a th:href="@{/icerik/{id}(id=${movie.id})}" class="btn btn-cine btn-sm flex-grow-1">İncele</a>
+                            <form th:action="@{/listem/toggle/{id}(id=${movie.id})}" method="post">
+                                <button type="submit" class="btn btn-outline-secondary btn-sm"
+                                        th:title="${watchlistIds.contains(movie.id)} ? 'Listeden Çıkar' : 'Listeye Ekle'"
+                                        th:text="${watchlistIds.contains(movie.id)} ? '✓' : '+'">+</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popüler Diziler -->
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 fw-bold mb-0 border-start border-4 border-danger ps-3">Popüler Diziler</h2>
+            <a th:href="@{/kesfet(tur='DIZI')}" class="text-decoration-none text-danger fw-semibold">Tümünü Gör &rarr;</a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-6 col-md-3" th:each="serie : ${series}">
+                <div class="media-card h-100 d-flex flex-column">
+                    <div class="poster-wrapper">
+                        <span class="badge bg-primary type-badge">DİZİ</span>
+                        <span class="rating-badge" th:text="'★ ' + ${serie.rating}">★ 8.7</span>
+                        <img th:src="@{${serie.posterUrl}}" th:alt="${serie.title}"
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x600/18181b/3b82f6?text=' + encodeURIComponent(this.alt);">
+                    </div>
+                    <div class="p-3 d-flex flex-column flex-grow-1">
+                        <small class="text-secondary mb-1" th:text="${serie.genre} + ' • ' + ${serie.duration}">Tür • Sezon</small>
+                        <h3 class="h6 fw-bold mb-3" th:text="${serie.title}">Dizi Adı</h3>
+                        <div class="mt-auto d-flex gap-2">
+                            <a th:href="@{/icerik/{id}(id=${serie.id})}" class="btn btn-cine btn-sm flex-grow-1">İncele</a>
+                            <form th:action="@{/listem/toggle/{id}(id=${serie.id})}" method="post">
+                                <button type="submit" class="btn btn-outline-secondary btn-sm"
+                                        th:text="${watchlistIds.contains(serie.id)} ? '✓' : '+'">+</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
